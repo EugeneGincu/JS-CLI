@@ -1,10 +1,11 @@
 "use strict"
 
-const fs= require('node:fs');
+const open = require('open');
+
 let arg;
+let tasks = []
 
-
-//console.log(tasks.length);
+console.log(tasks.length);
 
 if (!(arg = process.argv[2])) return;
 
@@ -12,11 +13,6 @@ console.log("Hi");
 
 switch (arg) {
 	case "add":
-	const data = readFile();
-	let tasks = [];
-	
-	if (!tasks) break;
-	
 	console.log("adding");
 	let task = {};
 	task.id = tasks.length;
@@ -24,7 +20,6 @@ switch (arg) {
 	task.status = process.argv[4];
 	task.createdAt = new Date();
 	tasks.push(task);
-	writeFile(tasks);
 	break;
 
 	case "update":
@@ -32,38 +27,17 @@ switch (arg) {
 	break;
 
 	case "list":
-	if (!tasks.length)
-		console.log("Number of tasks", tasks.length);
+	//if (!tasks.length)
+	//	console.log("Number of tasks", tasks.length);
 	break;
-
-	
 
 	default:
 	console.log("Unrecognized command!");
 	break;
 }
 
-
-//console.log(stringified);
-
-function readFile() {
-	try {
-		let data = fs.readFileSync('tasks.txt', 'utf8');
-		return data;
-	} catch (err) {
-		console.error(err);
-		return;
-	}
-}
-
-function writeFile(data) {
-	try {
-		let stringified = JSON.stringify(data);
-		fs.writeFileSync('tasks.txt',stringified);
-	} catch (err) {
-		console.error(err);
-	}
-}
+let stringified = JSON.stringify(tasks);
+console.log(stringified);
 
 function hello(greeting) {
     return greeting;
