@@ -9,15 +9,15 @@ if (!data)
 else
 	tasks = data;
 
+
 //console.log(tasks.length);
 
 if (!(arg = process.argv[2])) return;
 
-console.log("Hi");
+console.log("Task manager");
 
 switch (arg) {
 	case "add":
-	
 	console.log("adding");
 	let task = {};
 	task.id = tasks.length;
@@ -29,11 +29,25 @@ switch (arg) {
 	break;
 
 	case "update":
+	let id = process.argv[3];
+	tasks[id].description = process.argv[4];
+	tasks[id].status = process.argv[5];
 	
+	writeFile(tasks);
 	break;
 
 	case "list":
-	console.log("Number of tasks", tasks.length);
+	if (!tasks.length) {
+		console.log("No tasks!");
+		return;
+	}
+	console.log("Number of tasks:", tasks.length, "\n");
+	for (let val of tasks) {
+
+		console.log("Task ID: ", val['id']);
+		console.log("Task: ", val.description, '\n-----');
+		console.log();
+	}
 	break;
 
 	
@@ -49,7 +63,8 @@ switch (arg) {
 function readFile() {
 	try {
 		let data = fs.readFileSync('tasks.txt', 'utf8');
-		data = JSON.parse(data);
+		if (data)
+			data = JSON.parse(data);
 		return data;
 	} catch (err) {
 		console.error(err);
