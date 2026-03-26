@@ -31,7 +31,7 @@ switch (arg) {
 	break;
 
 	case "update":
-	arg_3 = process.argv[3];
+	arg_3 = Number(process.argv[3]);
 	tasks[id].description = process.argv[4];
 	tasks[id].status = process.argv[5];
 	writeFile(tasks);
@@ -52,11 +52,23 @@ switch (arg) {
 	break;
 
 	case "delete":
-	arg_3 = process.argv[3];
-	if (tasks[arg_3])
-		tasks.pop(arg_3);
+	arg_3 = Number(process.argv[3]);
+	let del_index = -1;
+	
+	for (let task of tasks) {
+		if (task.id === arg_3)
+			del_index = tasks.indexOf(task);
+	}
+
+	if (del_index >= 0)
+	{
+		console.log("Deleted", tasks[del_index].description);
+		tasks.pop(del_index);
+	}
 
 	writeFile(tasks);
+	
+	
 	
 	break;
 
