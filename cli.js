@@ -11,7 +11,6 @@ else
 	tasks = data;
 
 
-//console.log(tasks.length);
 
 if (!(arg = process.argv[2])) return;
 
@@ -20,65 +19,90 @@ console.log("Task manager");
 switch (arg) {
 
 	case "add":
-	console.log("adding");
-	let task = {};
-	task.id = tasks.length;
-	task.description = process.argv[3];
-	task.status = process.argv[4];
-	task.createdAt = new Date();
-	tasks.push(task);
-	writeFile(tasks);
-	break;
+		console.log("adding");
+		let task = {};
+		task.id = tasks.length;
+		task.description = process.argv[3];
+		task.status = process.argv[4];
+		task.createdAt = new Date();
+		tasks.push(task);
+		writeFile(tasks);
+		
+		break;
 
 	case "update":
-	arg_3 = Number(process.argv[3]);
-	tasks[id].description = process.argv[4];
-	tasks[id].status = process.argv[5];
-	writeFile(tasks);
-	break;
+		arg_3 = Number(process.argv[3]);
+		tasks[id].description = process.argv[4];
+		tasks[id].status = process.argv[5];
+		writeFile(tasks);
+		
+		break;
 
 	case "list":
-	if (!tasks.length) {
-		console.log("No tasks!");
-		return;
-	}
-	console.log("Number of tasks:", tasks.length, "\n");
-	for (let val of tasks) {
+		if (!tasks.length) {
+			console.log("No tasks!");
+			return;
+		}
+		console.log("Number of tasks:", tasks.length, "\n");
+		for (let val of tasks) {
 
-		console.log("Task ID: ", val['id']);
-		console.log("Task: ", val.description, '\n-----');
-		console.log();
-	}
-	break;
+			console.log("Task ID: ", val['id']);
+			console.log("Task: ", val.description);
+			console.log("Status: ", val.status, '\n-----');
+			console.log();
+		}
+		
+		break;
 
 	case "delete":
-	arg_3 = Number(process.argv[3]);
-	let del_index = -1;
+		arg_3 = Number(process.argv[3]);
+		let del_index = -1;
 	
-	for (let task of tasks) {
-		if (task.id === arg_3)
-			del_index = tasks.indexOf(task);
-	}
+		for (let task of tasks) {
+			if (task.id === arg_3)
+				del_index = tasks.indexOf(task);
+		}
 
-	if (del_index >= 0)
-	{
-		console.log("Deleted", tasks[del_index].description);
-		tasks.pop(del_index);
-	}
+		if (del_index >= 0)
+		{
+			console.log("Deleted", tasks[del_index].description);
+			tasks.pop(del_index);
+		}
 
-	writeFile(tasks);
+		writeFile(tasks);
+
+		break;
 	
-	
-	
-	break;
+	case "mark":
+		arg_3 = Number(process.argv[3]);
+		arg_4 = process.argv[4];
+		let mark_index = -1;
+		
+		mark_index = getIndex(tasks, arg_3);
+		
+		if (mark_index >= 0) {
+			tasks[mark_index].status = arg_4;
+		}
+		
+		writeFile(tasks);
+		
+		break;
 
 	default:
-	console.log("Unrecognized command!");
-	break;
+		console.log("Unrecognized command!");
+		break;
 }
 
+function getIndex(arr, id) {
+	let index = -1;
+	for (let task of arr) {
+			if (task.id === id)
+				index = tasks.indexOf(task);
+		}
+	
+	return index;
+}
 
-//console.log(stringified);
 
 function readFile() {
 	try {
