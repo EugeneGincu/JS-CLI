@@ -4,6 +4,11 @@ const fs= require('node:fs');
 let arg;
 let tasks;
 let arg_3, arg_4;
+let status = {
+	1 : "Done",
+	2 : "Not Done",
+	3 : "In Progress"
+	}
 const data = readFile();
 if (!data)
 	tasks = [];
@@ -23,7 +28,7 @@ switch (arg) {
 		let task = {};
 		task.id = tasks.length;
 		task.description = process.argv[3];
-		task.status = process.argv[4];
+		task.status = status[process.argv[4]];
 		task.createdAt = new Date();
 		tasks.push(task);
 		writeFile(tasks);
@@ -33,19 +38,24 @@ switch (arg) {
 	case "update":
 		arg_3 = Number(process.argv[3]);
 		tasks[id].description = process.argv[4];
-		tasks[id].status = process.argv[5];
+		tasks[id].status = status[process.argv[5]];
 		writeFile(tasks);
 		
 		break;
 
 	case "list":
+		
 		if (!tasks.length) {
 			console.log("No tasks!");
 			return;
 		}
+		
+		arg_3 = Number(process.argv[3]);
 		console.log("Number of tasks:", tasks.length, "\n");
+		
 		for (let val of tasks) {
-
+			if (arg_3 && (val.status !== status[arg_3])) continue;
+			
 			console.log("Task ID: ", val['id']);
 			console.log("Task: ", val.description);
 			console.log("Status: ", val.status, '\n-----');
@@ -70,7 +80,7 @@ switch (arg) {
 		}
 
 		writeFile(tasks);
-
+git 
 		break;
 	
 	case "mark":
@@ -81,7 +91,7 @@ switch (arg) {
 		mark_index = getIndex(tasks, arg_3);
 		
 		if (mark_index >= 0) {
-			tasks[mark_index].status = arg_4;
+			tasks[mark_index].status = status[arg_4];
 		}
 		
 		writeFile(tasks);
