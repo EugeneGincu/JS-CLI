@@ -4,12 +4,21 @@ const fs= require('node:fs');
 let arg;
 let tasks;
 let arg_3, arg_4;
+let data;
 let status = {
 	1 : "Done",
 	2 : "Not Done",
 	3 : "In Progress"
 	}
-const data = readFile();
+	
+try {
+	data = readFile();
+} catch (err) {
+	console.log('running catch clause');
+	writeFile([]);
+	data = [];
+}
+
 if (!data)
 	tasks = [];
 else
@@ -121,9 +130,9 @@ function readFile() {
 			data = JSON.parse(data);
 		return data;
 	} catch (err) {
-		console.error(err);
-		return;
-	}
+		//console.error(err);
+	} 
+		
 }
 
 function writeFile(data) {
