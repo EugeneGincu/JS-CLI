@@ -3,7 +3,11 @@
 const fs= require('node:fs');
 let arg;
 let tasks;
-let arg_3, arg_4;
+let [ , , command, arg_1, arg_2] = process.argv;
+//console.log("Arg 3: ", arg_1 == undefined);
+
+if (!command) return;
+
 let data;
 let status = {
 	1 : "Done",
@@ -26,18 +30,21 @@ else
 
 
 
-if (!(arg = process.argv[2])) return;
+//if (!(arg = process.argv[2])) return;
 
 console.log("Task manager");
 
-switch (arg) {
+
+switch (command) {
 
 	case "add":
+		if (!arg_1 || !arg_2) return;
+		if (Number(arg_2) < 0 || Number(arg_2) > 3) return;
 		console.log("adding");
 		let task = {};
 		task.id = tasks.length;
-		task.description = process.argv[3];
-		task.status = status[process.argv[4]];
+		task.description = arg_1;
+		task.status = status[arg_2];
 		task.createdAt = new Date();
 		tasks.push(task);
 		writeFile(tasks);
