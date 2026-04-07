@@ -3,7 +3,7 @@
 const fs= require('node:fs');
 let arg;
 let tasks;
-let [ , , command, arg_1, arg_2] = process.argv;
+let [ , , command, arg_1, arg_2, arg_3] = process.argv;
 //console.log("Arg 3: ", arg_1 == undefined);
 
 if (!command) return;
@@ -52,8 +52,12 @@ switch (command) {
 		break;
 
 	case "update":
-		arg_3 = Number(process.argv[3]);
-		tasks[id].description = process.argv[4];
+		arg_1 = Number(arg_1);
+		let index = tasks.findIndex(task => task.id == arg_1);
+		console.log(index);
+		return;
+		if (tasks[arg_1] == undefined) return;
+		tasks[arg_1].description = process.argv[4];
 		tasks[id].status = status[process.argv[5]];
 		writeFile(tasks);
 		
@@ -96,7 +100,7 @@ switch (command) {
 		}
 
 		writeFile(tasks);
-git 
+
 		break;
 	
 	case "mark":
