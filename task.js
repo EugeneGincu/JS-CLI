@@ -42,7 +42,7 @@ switch (command) {
 		if (Number(arg_2) < 0 || Number(arg_2) > 3) return;
 		console.log("adding");
 		let task = {};
-		task.id = tasks.length;
+		task.id = tasks[tasks.length - 1].id + 1;
 		task.description = arg_1;
 		task.status = status[arg_2];
 		task.createdAt = new Date();
@@ -93,11 +93,14 @@ switch (command) {
 				del_index = tasks.indexOf(task);
 		}
 
-		if (del_index >= 0)
-		{
-			console.log("Deleted", tasks[del_index].description);
-			tasks.pop(del_index);
-		}
+		if (del_index < 0) return;
+
+		console.log("Deleted", tasks[del_index].description);
+		tasks.copyWithin(del_index, del_index+1);
+
+        if (del_index != tasks.length)
+            tasks.pop();
+
 
 		writeFile(tasks);
 
@@ -155,6 +158,3 @@ function writeFile(data) {
 	}
 }
 
-function hello(greeting) {
-    return greeting;
-}
