@@ -54,11 +54,9 @@ switch (command) {
 	case "update":
 		arg_1 = Number(arg_1);
 		let index = tasks.findIndex(task => task.id == arg_1);
-		console.log(index);
-		return;
-		if (tasks[arg_1] == undefined) return;
-		tasks[arg_1].description = process.argv[4];
-		tasks[id].status = status[process.argv[5]];
+        if (!arg_2 ?? !arg_3) return;
+		tasks[index].description = arg_2;
+		tasks[index].status = status[Number(arg_3)];
 		writeFile(tasks);
 		
 		break;
