@@ -83,15 +83,18 @@ switch (command) {
 		break;
 
 	case "delete":
-		arg_3 = Number(process.argv[3]);
-		let del_index = -1;
-	
-		for (let task of tasks) {
-			if (task.id === arg_3)
-				del_index = tasks.indexOf(task);
-		}
+		arg_1 = Number(arg_1);
+		let del_index = tasks.findIndex(task => task.id === arg_1);
+		
+		//for (let task of tasks) {
+		//	if (task.id === arg_3)
+		//		del_index = tasks.indexOf(task);
+		//}
 
-		if (del_index < 0) return;
+		if (del_index < 0) {
+			console.log("Id not found.");
+			return;
+		}
 
 		console.log("Deleted", tasks[del_index].description);
 		tasks.copyWithin(del_index, del_index+1);
