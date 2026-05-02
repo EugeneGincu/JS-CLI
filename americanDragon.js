@@ -1,7 +1,11 @@
 "use strict"
-const {JSDOM } = require('jsdom');
+import {fetchURL, fetchSequentially} from './getURLS.js';
+//const {JSDOM } = require('jsdom');
+import { JSDOM } from 'jsdom';
+import fs from 'fs';
 
 const domain = 'http://www.americandragon.com/';
+const listHerbs = 'https://www.americandragon.com/IndividualHerbsIndex2.html'
 let document;
 
 //process.stdin.on("data", (chunk) => {
@@ -15,34 +19,28 @@ let document;
 //	getHerbLinks(document);
 //});
 
-const url = 'http://' + process.argv[2];
+const url = listHerbs
 
 console.log("Fetching ", url);
-let data = "";
+let data = [];
 
-fetch(url,{
-		headers: {
-			"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
-		}
-	})
-	.then((response) => {
-		if (!response.ok) {
-        throw new Error(`Request failed with status: ${response.status}`);
-    }
-    console.log("Content-Type:", response.headers.get("content-type"));
-    console.log("Content-Length:", response.headers.get("content-length"));
-    console.log("Content-Encoding:", response.headers.get("content-encoding"));
-    return response.text();
-	})
-	.then((source) => {
+fetchURL(listHerbs)
+	.then(source => {
 		console.log("Source length:", source.length);
 		const dom = new JSDOM(source, { contentType: "text/html" });
 		const document = dom.window.document;
 		console.log(document.title);
-		getHerbLinks(document);
+		let links = getHerbLinks(document);
+		console.log("Number of links:", links.length);
+		return fetchSequentially(links);
 	})
-	.catch((err) => {
-		console.error("Failed to fetch URL:", err.message);
+	.then(bodies => {
+		console.log("Body 1 length:", bodies[0].length);
+		console.log("Body 2 length:", bodies[1].length);
+		bodies.forEach(body => data.push(body);)
+		console.log("Number of data objects:", data.length);
+		console.log("Writing to file meridians.json");
+		fs.writeFileSync('meridians.json',JSON.stringify(data));
 	});
 
 
@@ -51,5 +49,19 @@ function getHerbLinks(document) {
     let tds = tables.querySelectorAll('td');
 	//tds.forEach(td => console.log(td.querySelector('a').href));
 	let firstLink = tds[0].querySelector('a').href;
-	console.log(domain + firstLink);
+	let links = [];
+	tds.forEach(td => {
+		if (!td.querySelector('a')) return;
+		let link = td.querySelector('a').href;
+		if (link.startsWith('../'))
+			link = link.slice(3,99);
+		else if (link.startsWith('/'))
+			link = link.slice(1,99);
+		console.log(domain + link);
+		links.push(domain + link);
+	});
+	console.log(domain + links[0]);
+	return links;
 }
+
+

@@ -6,16 +6,29 @@ export function fetchSequentially(urls) {
 	
 	function fetchURL(url) {
 		return fetch(url)
-		.then(response => response.text())
-		.then(body => {bodies.push(body))});
+		.then(response => {
+			console.log("Fetched:",url);
+			return response.text();
+		})
+		.then(body => {bodies.push(body)});
 	}
 	
-	p = Promise.resolve(undefined);
+	let p = Promise.resolve(undefined);
 	
-	for (url of urls)
+	for (let url of urls)
 		p = p.then(() => fetchURL(url));
 	
 	return p.then(() => bodies);
 	
-	
+}
+
+export function fetchURL(url) {
+	return fetch(url)
+		.then(response => {
+		if (!response.ok)
+			throw new Error(`Request failed with status: ${response.status}`);
+		return response.text();
+	})
+		.then(source => source)
+		.catch(e => console.error(e));
 }
