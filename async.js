@@ -21,4 +21,8 @@ async function getURLS() {
 	return url1 + url2;
 }
 
-Promise.resolve(getURLS()).then(source => console.log(source));
+Pomise.resolve(getURLS()).then(source => console.log(source));
+
+console.log("Top level await");
+let top_level = await fetch('http://www.google.com').then(body => body.text());
+console.log(top_level);
