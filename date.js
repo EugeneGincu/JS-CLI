@@ -20,9 +20,8 @@ console.log(some_date);
 console.log(some_date.toLocaleDateString());
 console.log(some_date.toLocaleTimeString());
 
-//setInterval(time, 1000);
+setInterval(time, 1000);
 
-time();
 
 function time() {
 	let now = new Date();
@@ -31,11 +30,14 @@ function time() {
 	midnight.setHours(0, 0, 0, 0);
 	console.log("Midnight: ",midnight.toLocaleTimeString());
 	
-	let seconds_left = (midnight - now) / 1000 % 60;
-	let minutes_left = seconds_left / 60 % 60;
-	let hours_left = minutes_left / 60 % 60;
+	let seconds_left =  (midnight - now) / 1000;
+	let minutes_left = seconds_left / 60;
+	let hours_left =   minutes_left / 60;
 	
-	console.log("Hours: ", Math.floor(hours_left));
-	console.log("Minutes: ", Math.floor(minutes_left));
-	console.log("Seconds: ", Math.floor(seconds_left));
+	
+	
+	
+	console.log("Hours: ", Math.floor(hours_left % 24));
+	console.log("Minutes: ", Math.floor(minutes_left % 60));
+	console.log("Seconds: ", Math.floor(seconds_left % 60));
 }
