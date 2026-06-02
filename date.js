@@ -20,10 +20,11 @@ console.log(some_date);
 console.log(some_date.toLocaleDateString());
 console.log(some_date.toLocaleTimeString());
 
-setInterval(time, 1000);
+setInterval(countdown_midnight, 1000);
+countdown_newYear();
 
 
-function time() {
+function countdown_midnight() {
 	let now = new Date();
 	let midnight = new Date();
 	midnight.setDate(midnight.getDate() + 1);
@@ -34,10 +35,19 @@ function time() {
 	let minutes_left = seconds_left / 60;
 	let hours_left =   minutes_left / 60;
 	
-	
-	
-	
 	console.log("Hours: ", Math.floor(hours_left % 24));
 	console.log("Minutes: ", Math.floor(minutes_left % 60));
 	console.log("Seconds: ", Math.floor(seconds_left % 60));
+}
+
+function countdown_newYear() {
+	let now = new Date();
+	let newYear = new Date("January 1, 2000");
+	newYear = newYear.setFullYear(now.getFullYear() + 1);
+	
+	let days_left = (newYear - now) / 1000 / 60 / 60 / 24;
+	let hours_left = (days_left - Math.floor(days_left)) * 24;
+	let minutes_left = (hours_left - Math.floor(hours_left)) * 60;
+	let seconds_left = (minutes_left - Math.floor(minutes_left)) * 60;
+	console.log("Days until new year: ", Math.floor(days_left), " Hours: ", Math.floor(hours_left), " Minutes: ", Math.floor(minutes_left), " Seconds: ", Math.floor(seconds_left));
 }
