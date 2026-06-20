@@ -1,5 +1,9 @@
 "use strict"
 
+import {readFile, writeFile} from 'node:fs/promises';
+import {fetchURL, fetchSequentially } from './getURLS.js';
+import { JSDOM } from 'jsdom';
+
 const url = 'http://' + process.argv[2];
 
 console.log("Fetching ", url);
@@ -32,6 +36,23 @@ fetch(url,{
 		console.error("Failed to fetch URL:", err.message);
 	});
 	
+function createURLs() {
+	const urls = [
+				['Levis', 'https://www.levi.com/CA/en_CA/clothing/men/jeans/taper/541TM-athletic-taper-mens-jeans/p/181811001'],
+				['Levis', 'https://www.levi.com/CA/en_CA/clothing/men/jeans/taper/541TM-athletic-taper-mens-jeans/p/181810964']
+				]
+	return urls;
+	
+}
+
+function getPromoInfo(urls) {
+	let bodies = urls.map(url => fetchURL(url[1]));
+	Promise.allSettled(bodies).then(results => {
+		console.log(results[0].value);
+		console.log(results[1].value);
+	});
+}
+	
 function wait(duration) {
 		return new Promise((resolve, reject) => {
 			if (duration < 0) 
@@ -40,6 +61,8 @@ function wait(duration) {
 			setTimeout(resolve, duration);
 		});
 }
+
+getPromoInfo(createURLs());
 
 wait(5000).then(() => console.log('Waited 5000'));
 console.log("Didn't wait");
