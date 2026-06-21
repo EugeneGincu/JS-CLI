@@ -4,7 +4,7 @@ import {readFile, writeFile} from 'node:fs/promises';
 import {fetchURL, fetchSequentially } from './getURLS.js';
 import { JSDOM } from 'jsdom';
 
-const url = 'http://' + process.argv[2];
+const url =  process.argv[2];
 
 console.log("Fetching ", url);
 
@@ -39,7 +39,8 @@ fetch(url,{
 function createURLs() {
 	const urls = [
 				['Levis', 'https://www.levi.com/CA/en_CA/clothing/men/jeans/taper/541TM-athletic-taper-mens-jeans/p/181811001'],
-				['Levis', 'https://www.levi.com/CA/en_CA/clothing/men/jeans/taper/541TM-athletic-taper-mens-jeans/p/181810964']
+				['Levis', 'https://www.levi.com/CA/en_CA/clothing/men/jeans/taper/541TM-athletic-taper-mens-jeans/p/181810964'],
+				['Footlocker', 'https://www.footlocker.ca/en/product/~/42740011.html']
 				]
 	return urls;
 	
