@@ -15,17 +15,19 @@ const file = readFile('promoCheck.txt','utf-8')
 
 let promisesArray = [];
 let bodies = [];
-file
-.then(urls => promiseArray(urls,promisesArray))
-.then(() => Promise.allSettled(promisesArray))
-.then(results => {
-	bodies.push(results[0].value);
-	bodies.push(results[1].value);
-})
-.then(() => console.log(bodies));
+//file
+//.then(urls => promiseArray(urls,promisesArray))
+//.then(() => Promise.allSettled(promisesArray))
+//.then(results => {
+//	bodies.push(results[0].value);
+//	bodies.push(results[1].value);
+//})
+//.then(() => console.log(bodies));
 
-
-
+let urls = await file;
+let results = await promiseArray(urls,promisesArray);
+let temp = await Promise.allSettled(promisesArray);
+console.log(temp);
 
 function promiseArray(urls, promisesArray) {
 	
