@@ -29,6 +29,11 @@ let results = await promiseArray(urls,promisesArray);
 let temp = await Promise.allSettled(promisesArray);
 console.log(temp);
 
+for (let result of promisesArray) {
+	let value = await result;
+	console.log("Using loop:", value);
+}
+
 function promiseArray(urls, promisesArray) {
 	
 	for (let url of urls) {
