@@ -34,6 +34,10 @@ for (let result of promisesArray) {
 	console.log("Using loop:", value);
 }
 
+for await (let result of promisesArray) {
+	console.log("Using async loop:", result);
+}
+
 function promiseArray(urls, promisesArray) {
 	
 	for (let url of urls) {
