@@ -37,6 +37,13 @@ for (let result of promisesArray) {
 for await (let result of promisesArray) {
 	console.log("Using async loop:", result);
 }
+function runFetch() {
+	fetch('http://www.google.com/')
+	.then(response => response.text())
+	.then(body => {console.log(body); runFetch();});
+}
+
+runFetch();
 
 function promiseArray(urls, promisesArray) {
 	
