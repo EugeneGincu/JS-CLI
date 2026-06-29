@@ -43,7 +43,16 @@ function runFetch() {
 	.then(body => {console.log(body); runFetch();});
 }
 
-runFetch();
+//runFetch();
+
+try {
+	let fetching = await fetch('http://www.google.com/')
+	let fetchingResponse = await fetching.text();
+	console.log("Fetch with try-catch: ",fetchingResponse);
+	
+} catch (e) {
+	console.log(e);
+}
 
 function promiseArray(urls, promisesArray) {
 	
